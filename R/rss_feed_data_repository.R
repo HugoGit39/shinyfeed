@@ -7,6 +7,9 @@ RssFeedDataRepository <- R6::R6Class(
     },
     get_all = function() {
       private$feed_data
+    },
+    get_all_feeds = function() {
+      sort(unique(private$feed_data$feed_title))
     }
   ),
   private = list(

@@ -1,3 +1,4 @@
+library(magrittr)
 library(shiny.fluent)
 
 RSS_FEEDS <- c(
@@ -6,7 +7,6 @@ RSS_FEEDS <- c(
 )
 
 RSS_FEED_DATA_REPOSITORY <- RssFeedDataRepository$new(RSS_FEEDS)
-
 
 
 ui <- fluentPage(
@@ -99,10 +99,12 @@ ui <- fluentPage(
                 list(
                   name = "Subscriptions", 
                   isExpanded = TRUE,
-                  links = list(
-                    list(name = "Feed1", url = "#!/", key = "feed1"),
-                    list(name = "Feed2", url = "#!/", key = "feed2")
-                  )
+                  links = lapply(
+                      RSS_FEED_DATA_REPOSITORY$get_all_feeds(),
+                      function(feed_title) {
+                        list(name = feed_title, url = "#!/", key = feed_title)
+                      }
+                    )
                 )
               )
             )

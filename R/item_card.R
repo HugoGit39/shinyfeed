@@ -1,4 +1,4 @@
-item_card <- function(title, description, image_url, publish_date, author, on_click_href) {
+item_card <- function(title, description, image_url, publish_date, author, author_image, on_click_href) {
   preview_images <- list(
     list(
       previewImageSrc = image_url,
@@ -7,8 +7,16 @@ item_card <- function(title, description, image_url, publish_date, author, on_cl
     )
   )
   
+  redirect_fun <- glue::glue(
+    "function() { window.open('{{ on_click_href }}', '_blank') }",
+    .open = "{{",
+    .close = "}}"
+  )
+  
   shiny.fluent::DocumentCard(
-    onClick = shiny.react::JS("function() { window.open('https://www.google.com', '_blank') }"),
+    onClick = shiny.react::JS(
+      redirect_fun
+    ),
     DocumentCardPreview(
       previewImages = preview_images,
       
@@ -24,7 +32,7 @@ item_card <- function(title, description, image_url, publish_date, author, on_cl
     ),
     DocumentCardActivity(
       activity = glue::glue("Published on {publish_date}"),
-      people = list(list(name = author, profileImageSrc = '', initials = "AA"))
+      people = list(list(name = author, profileImageSrc = ""))
     )
   )
 }

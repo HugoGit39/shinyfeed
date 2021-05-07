@@ -10,7 +10,6 @@ grid_feed_server <- function(id, feed_items) {
       output$grid_items <- renderReact({
         feed_data <- feed_items()
         
-        
         Stack(
           horizontal = TRUE,
           horizontalAlign = "space-evenly",
@@ -18,12 +17,13 @@ grid_feed_server <- function(id, feed_items) {
           wrap = TRUE,
           lapply(seq_len(nrow(feed_data)), function(item_id) {
             item_card(
-              on_click_href = "https://www.google.com",
+              on_click_href = feed_data[item_id, ]$item_link,
               title = feed_data[item_id, ]$item_title,
               description = feed_data[item_id, ]$item_description,
-              image_url = glue::glue("https://picsum.photos/318/196?random={item_id}"),
+              image_url = LinkPreviewDataExtractor$new()$extract_og_attribute(feed_data[item_id, ]$item_link, "image"),
               publish_date = feed_data[item_id, ]$item_pub_date,
-              author = feed_data[item_id, ]$feed_title
+              author = feed_data[item_id, ]$feed_title,
+              author_image = ""
             )
           })
         )

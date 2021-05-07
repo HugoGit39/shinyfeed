@@ -1,4 +1,4 @@
-item_card <- function(title, description, image_url, publish_date, author) {
+item_card <- function(title, description, image_url, publish_date, author, on_click_href) {
   preview_images <- list(
     list(
       previewImageSrc = image_url,
@@ -8,7 +8,11 @@ item_card <- function(title, description, image_url, publish_date, author) {
   )
   
   shiny.fluent::DocumentCard(
-    DocumentCardPreview(previewImages = preview_images),
+    onClick = shiny.react::JS("function() { window.open('https://www.google.com', '_blank') }"),
+    DocumentCardPreview(
+      previewImages = preview_images,
+      
+    ),
     DocumentCardTitle(
       title = title,
       shoudTruncate = TRUE

@@ -51,6 +51,7 @@ ui <- fluentPage(
         wrap = TRUE,
         lapply(seq_len(30), function(x) {
           item_card(
+            on_click_href = "https://www.google.com",
             title = shinipsum::random_text(nword = 5),
             description = shinipsum::random_text(nword = 30),
             image_url = glue::glue("https://picsum.photos/318/196?random={x}"),

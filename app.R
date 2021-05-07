@@ -16,6 +16,7 @@ ui <- fluentPage(
     class = "grid-container",
     div(
       class = "header",
+      FontIcon(iconName = "SingleBookmarkSolid", class = "title-icon"),
       Text(variant = "xxLarge", "shinyfeed")
     ),
     div(

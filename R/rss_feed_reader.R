@@ -6,7 +6,7 @@ RssFeedReader <- R6::R6Class(
       private$feed_urls <- feed_urls
     },
     read = function() {
-      private$feed_data <- data.table::rbindlist(
+      data.table::rbindlist(
         lapply(private$feed_urls, function(feed_url) {
           private$read_single_feed(feed_url)
       }), fill = TRUE)
@@ -14,7 +14,6 @@ RssFeedReader <- R6::R6Class(
   ),
   private = list(
     feed_urls = NA,
-    feed_data = NA,
     read_single_feed = function(feed_url) {
       checkmate::assert_string(feed_url)
       

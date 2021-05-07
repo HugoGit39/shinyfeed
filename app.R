@@ -1,11 +1,12 @@
 library(shiny.fluent)
 
-# RSS_FEEDS <- c(
-#   "https://appsilon.com/rss"
-# )
-# 
-# RSS_FEED_READER <- RssFeedReader$new(RSS_FEEDS)
-# RSS_FEED_READER$read()
+RSS_FEEDS <- c(
+  "https://appsilon.com/rss",
+  "https://blog.rstudio.com/index.xml"
+)
+
+RSS_FEED_DATA_REPOSITORY <- RssFeedDataRepository$new(RSS_FEEDS)
+
 
 
 ui <- fluentPage(
@@ -14,11 +15,7 @@ ui <- fluentPage(
   ),
   div(
     class = "grid-container",
-    div(
-      class = "header",
-      FontIcon(iconName = "SingleBookmarkSolid", class = "title-icon"),
-      Text(variant = "xxLarge", "shinyfeed")
-    ),
+    header(),
     div(
       class = "commands",
       shiny.fluent::CommandBar(
@@ -123,27 +120,14 @@ ui <- fluentPage(
     ),
     div(
       class = "main", 
-      Stack(
-        horizontal = TRUE,
-        horizontalAlign = "space-evenly",
-        tokens = list(childrenGap = 20),
-        wrap = TRUE,
-        lapply(seq_len(30), function(x) {
-          item_card(
-            on_click_href = "https://www.google.com",
-            title = shinipsum::random_text(nword = 5),
-            description = shinipsum::random_text(nword = 30),
-            image_url = glue::glue("https://picsum.photos/318/196?random={x}"),
-            publish_date = Sys.time() + sort(sample(1:10, 1)),
-            author = shinipsum::random_text(nword = 1)
-          )
-        })
-      )
+      grid_feed_ui("grid_feed")
     )
   )
 )
 
 server <- function(input, output, session) {
+  feed_items <- reactiveVal(RSS_FEED_DATA_REPOSITORY$get_all())
+  grid_feed_server(id = "grid_feed", feed_items = feed_items)
 }
 
 shinyApp(ui, server)

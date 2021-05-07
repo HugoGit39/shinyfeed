@@ -19,6 +19,78 @@ ui <- fluentPage(
       Text(variant = "xxLarge", "shinyfeed")
     ),
     div(
+      class = "commands",
+      shiny.fluent::CommandBar(
+        items = list(
+          list(
+            key = "sort",
+            text = "Sort",
+            cacheKey = "myCacheKey",
+            iconProps = list(iconName = "SortLines"),
+            subMenuProps = list(
+              items = list(
+                list(
+                  key = "titleAscending",
+                  text = "Sort By Title (from A to Z)",
+                  iconProps = list(iconName = "Ascending")
+                ),
+                list(
+                  key = "titleDescending",
+                  text = "Sort By Title (from Z to A)",
+                  iconProps = list(iconName = "Descending")
+                ),
+                list(
+                  key = "fromNewest",
+                  text = "Sort from newest",
+                  iconProps = list(iconName = "Recent")
+                ),
+                list(
+                  key = "fromOlders",
+                  text = "Sort from oldest",
+                  iconProps = list(iconName = "History")
+                )
+              )
+            )
+          ),
+          list(
+            key = "viewType",
+            text = "Grid View",
+            iconProps = list(iconName = "Tiles"),
+            subMenuProps = list(
+              items = list(
+                list(
+                  key = "gridView",
+                  text = "Grid View",
+                  iconProps = list(iconName = "Tiles")
+                ),
+                list(
+                  key = "listView",
+                  text = "List View",
+                  iconProps = list(iconName = "List")
+                )
+              )
+            )
+          )
+        ),
+        farItems = list(
+          list(
+            key = "code",
+            text = "Source code",
+            ariaLabel = "Source code",
+            iconOnly = TRUE,
+            iconProps = list(iconName = "Embed")
+          ),
+          list(
+            key = "info",
+            text = "Info",
+            ariaLabel = "Info",
+            iconOnly = TRUE,
+            iconProps = list(iconName = "Info")
+          )
+        )
+      )
+    ),
+    div(
       class = "sidenav",
       Stack(
         Nav(
@@ -26,8 +98,14 @@ ui <- fluentPage(
             list(
               links = list(
                 list(name = "All", url = "#!/", key = "all"),
-                list(name = "Feed1", url = "#!/", key = "feed1"),
-                list(name = "Feed2", url = "#!/", key = "feed2")
+                list(
+                  name = "Subscriptions", 
+                  isExpanded = TRUE,
+                  links = list(
+                    list(name = "Feed1", url = "#!/", key = "feed1"),
+                    list(name = "Feed2", url = "#!/", key = "feed2")
+                  )
+                )
               )
             )
           ),
@@ -46,8 +124,8 @@ ui <- fluentPage(
       class = "main", 
       Stack(
         horizontal = TRUE,
-        horizontalAlign = "center",
-        tokens = list(childrenGap = 10),
+        horizontalAlign = "space-evenly",
+        tokens = list(childrenGap = 20),
         wrap = TRUE,
         lapply(seq_len(30), function(x) {
           item_card(
@@ -60,10 +138,6 @@ ui <- fluentPage(
           )
         })
       )
-    ),
-    div(
-      class = "footer",
-      "footer"
     )
   )
 )

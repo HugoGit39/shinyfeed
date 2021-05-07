@@ -1,8 +1,8 @@
 .grid-container {
   display: grid;
   grid-template-columns: 320px 1fr;
-  grid-template-rows: 54px 1fr 45px;
-  grid-template-areas: "header header" "sidenav main" "footer footer";
+  grid-template-rows: 54px 1fr;
+  grid-template-areas: "header commands" "sidenav main";
   height: 100vh;
 }
 
@@ -13,15 +13,15 @@
   display: flex;
 }
 
-.main {
-  grid-area: main;
-  overflow: auto;
+.commands {
+  grid-area: commands;
 }
 
-.footer {
-  grid-area: footer;
-  background-color: #f3f2f1;
-  padding: 12px 20px;
+.main {
+  grid-area: main;
+  background-color: #faf9f8;
+  overflow: auto;
+  padding: 20px;
 }
 
 .sidenav {

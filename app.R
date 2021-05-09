@@ -122,7 +122,8 @@ ui <- fluentPage(
     ),
     div(
       class = "main", 
-      grid_feed_ui("grid_feed")
+      # grid_feed_ui("grid_feed")
+      list_feed_ui("list_feed")
     )
   )
 )
@@ -130,6 +131,7 @@ ui <- fluentPage(
 server <- function(input, output, session) {
   feed_items <- reactiveVal(RSS_FEED_DATA_REPOSITORY$get_all())
   grid_feed_server(id = "grid_feed", feed_items = feed_items)
+  list_feed_server(id = "list_feed", feed_items = feed_items)
 }
 
 shinyApp(ui, server)

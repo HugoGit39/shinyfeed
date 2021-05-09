@@ -12,7 +12,7 @@ grid_feed_server <- function(id, feed_items) {
         
         Stack(
           horizontal = TRUE,
-          horizontalAlign = "space-evenly",
+          horizontalAlign = "flext-start",
           tokens = list(childrenGap = 20),
           wrap = TRUE,
           lapply(seq_len(nrow(feed_data)), function(item_id) {

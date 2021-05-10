@@ -18,75 +18,7 @@ ui <- fluentPage(
     header(),
     div(
       class = "commands",
-      shiny.fluent::CommandBar(
-        items = list(
-          list(
-            key = "sort",
-            text = "Sort",
-            cacheKey = "myCacheKey",
-            iconProps = list(iconName = "SortLines"),
-            subMenuProps = list(
-              items = list(
-                list(
-                  key = "titleAscending",
-                  text = "Sort By Title (from A to Z)",
-                  iconProps = list(iconName = "Ascending")
-                ),
-                list(
-                  key = "titleDescending",
-                  text = "Sort By Title (from Z to A)",
-                  iconProps = list(iconName = "Descending")
-                ),
-                list(
-                  key = "fromNewest",
-                  text = "Sort from newest",
-                  iconProps = list(iconName = "Recent")
-                ),
-                list(
-                  key = "fromOlders",
-                  text = "Sort from oldest",
-                  iconProps = list(iconName = "History")
-                )
-              )
-            )
-          ),
-          list(
-            key = "viewType",
-            text = "Grid View",
-            iconProps = list(iconName = "Tiles"),
-            subMenuProps = list(
-              items = list(
-                list(
-                  key = "gridView",
-                  text = "Grid View",
-                  iconProps = list(iconName = "Tiles")
-                ),
-                list(
-                  key = "listView",
-                  text = "List View",
-                  iconProps = list(iconName = "List")
-                )
-              )
-            )
-          )
-        ),
-        farItems = list(
-          list(
-            key = "code",
-            text = "Source code",
-            ariaLabel = "Source code",
-            iconOnly = TRUE,
-            iconProps = list(iconName = "Embed")
-          ),
-          list(
-            key = "info",
-            text = "Info",
-            ariaLabel = "Info",
-            iconOnly = TRUE,
-            iconProps = list(iconName = "Info")
-          )
-        )
-      )
+      command_bar_module_ui("view_command_bar")
     ),
     div(
       class = "sidenav",
@@ -122,16 +54,15 @@ ui <- fluentPage(
     ),
     div(
       class = "main", 
-      # grid_feed_ui("grid_feed")
-      list_feed_ui("list_feed")
+      feed_module_ui("feed")
     )
   )
 )
 
 server <- function(input, output, session) {
   feed_items <- reactiveVal(RSS_FEED_DATA_REPOSITORY$get_all())
-  grid_feed_server(id = "grid_feed", feed_items = feed_items)
-  list_feed_server(id = "list_feed", feed_items = feed_items)
+  settings <- command_bar_module_server("view_command_bar")
+  feed_module_server("feed", settings, feed_items)
 }
 
 shinyApp(ui, server)

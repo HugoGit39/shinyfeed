@@ -39,19 +39,16 @@ command_bar_module_server <- function(id) {
 
 .create_command_bar_far_items <- function() {
   list(
-    list(
-      key = "code",
+    CommandBarItem(
       text = "Source code",
-      ariaLabel = "Source code",
+      icon = "Embed",
       iconOnly = TRUE,
-      iconProps = list(iconName = "Embed")
+      href = "https://github.com/rszymanski/shinyfeed"
     ),
-    list(
-      key = "info",
+    CommandBarItem(
       text = "Info",
-      ariaLabel = "Info",
-      iconOnly = TRUE,
-      iconProps = list(iconName = "Info")
+      icon = "Info",
+      iconOnly = TRUE
     )
   )
 }

@@ -37,7 +37,7 @@ feed_module_server <- function(id, settings, rss_feed_service) {
         on_click_href = feed_data[item_id, ]$item_link,
         title = feed_data[item_id, ]$item_title,
         description = feed_data[item_id, ]$item_description,
-        image_url = LinkPreviewDataExtractor$new()$extract_og_attribute(feed_data[item_id, ]$item_link, "image"),
+        image_url = extract_link_preview_cached(feed_data[item_id, ]$item_link),
         publish_date = feed_data[item_id, ]$item_pub_date,
         author = feed_data[item_id, ]$feed_title,
         author_image = ""

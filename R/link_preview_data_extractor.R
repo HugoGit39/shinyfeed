@@ -20,3 +20,12 @@ LinkPreviewDataExtractor <- R6::R6Class(
   private = list(
   )
 )
+
+extract_link_preview <- (function() {
+  extractor <- LinkPreviewDataExtractor$new()
+  function(link) {
+    extractor$extract_og_attribute(link, NULL)
+  }
+})()
+
+extract_link_preview_cached <- memoise::memoise(extract_link_preview)

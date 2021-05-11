@@ -3,10 +3,15 @@ feed_module_ui <- function(id) {
   reactOutput(ns("feed_items"))
 }
 
-feed_module_server <- function(id, settings, feed_items) {
+feed_module_server <- function(id, settings, rss_feed_service) {
   moduleServer(
     id,
     function(input, output, session) {
+      
+      feed_items <- reactive({
+        rss_feed_service$get_sorted_items(settings$sort_type)
+      })
+      
       output$feed_items <- renderReact({
         feed_data <- feed_items()
         

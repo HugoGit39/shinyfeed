@@ -6,7 +6,7 @@ RSS_FEEDS <- c(
   "https://blog.rstudio.com/index.xml"
 )
 
-RSS_FEED_DATA_REPOSITORY <- RssFeedDataRepository$new(RSS_FEEDS)
+RSS_FEED_SERVICE <- RssFeedService$new(RSS_FEEDS)
 
 
 ui <- fluentPage(
@@ -32,7 +32,7 @@ ui <- fluentPage(
                   name = "Subscriptions", 
                   isExpanded = TRUE,
                   links = lapply(
-                      RSS_FEED_DATA_REPOSITORY$get_all_feeds(),
+                      RSS_FEED_SERVICE$get_all_feeds(),
                       function(feed_title) {
                         list(name = feed_title, url = "#!/", key = feed_title)
                       }
@@ -60,9 +60,8 @@ ui <- fluentPage(
 )
 
 server <- function(input, output, session) {
-  feed_items <- reactiveVal(RSS_FEED_DATA_REPOSITORY$get_all())
   settings <- command_bar_module_server("view_command_bar")
-  feed_module_server("feed", settings, feed_items)
+  feed_module_server("feed", settings, RSS_FEED_SERVICE)
 }
 
 shinyApp(ui, server)

@@ -11,8 +11,12 @@ RssFeedService <- R6::R6Class(
     get_all_feeds = function() {
       private$repository$get_all_feeds()
     },
-    get_sorted_items = function(sort_type) {
+    get_items = function(feed_source, sort_type) {
       feed_items <- self$get_all()
+      
+      if (!is.null(feed_source)) {
+        feed_items <- feed_items[feed_title == feed_source]
+      }
       
       switch(
         sort_type,

@@ -9,7 +9,8 @@ feed_module_server <- function(id, settings, rss_feed_service) {
     function(input, output, session) {
       
       feed_items <- reactive({
-        rss_feed_service$get_sorted_items(settings$sort_type)
+        feed_source <- get_query_param()$feed_source
+        rss_feed_service$get_items(feed_source, settings$sort_type)
       })
       
       output$feed_items <- renderReact({

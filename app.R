@@ -1,5 +1,11 @@
 library(magrittr)
+library(shiny)
 library(shiny.fluent)
+library(shiny.router)
+
+shiny::addResourcePath("shiny.router", system.file("www", package = "shiny.router"))
+shiny_router_js_src <- file.path("shiny.router", "shiny.router.js")
+shiny_router_script_tag <- shiny::tags$script(type = "text/javascript", src = shiny_router_js_src)
 
 RSS_FEEDS <- c(
   "https://appsilon.com/rss",
@@ -8,10 +14,14 @@ RSS_FEEDS <- c(
 
 RSS_FEED_SERVICE <- RssFeedService$new(RSS_FEEDS)
 
+ROUTER <- make_router(
+  route("/",  feed_module_ui("feed"))
+)
 
 ui <- fluentPage(
   tags$head(
-    tags$link(rel = "stylesheet", type = "text/css", href = "styles.css")
+    tags$link(rel = "stylesheet", type = "text/css", href = "styles.css"),
+    shiny_router_script_tag
   ),
   div(
     class = "grid-container",
@@ -34,7 +44,7 @@ ui <- fluentPage(
                   links = lapply(
                       RSS_FEED_SERVICE$get_all_feeds(),
                       function(feed_title) {
-                        list(name = feed_title, url = "#!/", key = feed_title)
+                        list(name = feed_title, url = glue::glue("#!/?feed_source={feed_title}"), key = feed_title)
                       }
                     )
                 )
@@ -53,13 +63,14 @@ ui <- fluentPage(
       )
     ),
     div(
-      class = "main", 
-      feed_module_ui("feed")
+      class = "main",
+      ROUTER$ui
     )
   )
 )
 
 server <- function(input, output, session) {
+  ROUTER$server(input, output, session)
   settings <- command_bar_module_server("view_command_bar")
   feed_module_server("feed", settings, RSS_FEED_SERVICE)
 }

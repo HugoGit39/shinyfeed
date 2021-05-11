@@ -3,16 +3,13 @@ library(shiny)
 library(shiny.fluent)
 library(shiny.router)
 
+CONFIG <- config::get()
+
 shiny::addResourcePath("shiny.router", system.file("www", package = "shiny.router"))
 shiny_router_js_src <- file.path("shiny.router", "shiny.router.js")
 shiny_router_script_tag <- shiny::tags$script(type = "text/javascript", src = shiny_router_js_src)
 
-RSS_FEEDS <- c(
-  "https://appsilon.com/rss",
-  "https://blog.rstudio.com/index.xml"
-)
-
-RSS_FEED_SERVICE <- RssFeedService$new(RSS_FEEDS)
+RSS_FEED_SERVICE <- RssFeedService$new(CONFIG$rss_feeds)
 
 ROUTER <- make_router(
   route("/",  feed_module_ui("feed"))

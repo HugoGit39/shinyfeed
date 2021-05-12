@@ -17,7 +17,7 @@ RssFeedReader <- R6::R6Class(
     read_single_feed = function(feed_url) {
       checkmate::assert_string(feed_url)
       
-      feed_data <- tidyRSS::tidyfeed(feed = feed_url)
+      feed_data <- suppressMessages(tidyRSS::tidyfeed(feed = feed_url))
       data.table::data.table(feed_data)
     }
   )

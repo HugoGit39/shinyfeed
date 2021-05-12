@@ -9,20 +9,41 @@ feed_module_server <- function(id, settings, rss_feed_service) {
     function(input, output, session) {
       
       feed_items <- reactive({
-        feed_source <- get_query_param()$feed_source
-        rss_feed_service$get_items(feed_source, settings$sort_type)
+        if (is.null(rss_feed_service())) {
+          NULL
+        } else {
+          feed_source <- get_query_param()$feed_source
+          rss_feed_service()$get_items(feed_source, settings$sort_type)
+        }
       })
       
       output$feed_items <- renderReact({
         feed_data <- feed_items()
         
-        switch(
-          settings$view_type,
-          grid = .create_grid_view(feed_data),
-          list = .create_list_view(feed_data)
-        )
+        if (is.null(feed_items())) {
+          .create_loading_view()
+        } else {
+          switch(
+            settings$view_type,
+            grid = .create_grid_view(feed_data),
+            list = .create_list_view(feed_data)
+          )
+        }
+        
       })
     }
+  )
+}
+
+.create_loading_view <- function() {
+  Stack(
+    horizontal = TRUE,
+    horizontalAlign = "center",
+      Spinner(
+        class = "spinner-container",
+        size = 3,
+        label = "Fetching feed items, please wait..."
+      )
   )
 }
 
@@ -47,7 +68,9 @@ feed_module_server <- function(id, settings, rss_feed_service) {
 }
 
 .create_list_view <- function(feed_data) {
-  feed_data$item_pub_date = as.character(feed_data$item_pub_date)
+  if (!is.null(feed_data)) {
+    feed_data$item_pub_date = as.character(feed_data$item_pub_date)
+  }
   
   columns <- list(
     list(key = "title", fieldName = "item_title", name = "Title", minWidth = 100, maxWidth = 600, isResizable = TRUE),
@@ -55,12 +78,16 @@ feed_module_server <- function(id, settings, rss_feed_service) {
     list(key = "author", fieldName = "feed_title", name = "Author", minWidth = 100, maxWidth = 200, isResizable = TRUE)
   )
   
-  DetailsList(
-    items = feed_data,
-    columns = columns,
-    selectionMode = 0,
-    onRenderItemColumn = shiny.react::JS(
-      "(item, index, column) => {
+  shiny.react::reactElement(
+    module = "@fluentui/react",
+    name = "ShimmeredDetailsList",
+    props = shiny.react::asProps(
+      items = feed_data,
+      columns = columns,
+      selectionMode = 0,
+      enableShimmer = is.null(feed_data),
+      onRenderItemColumn = shiny.react::JS(
+        "(item, index, column) => {
               const fieldContent = item[column.fieldName];
               
               switch (column.key) {
@@ -76,6 +103,8 @@ feed_module_server <- function(id, settings, rss_feed_service) {
               }
             }
       "
-    )
+      )
+    ),
+    deps = shinyFluentDependency()
   )
 }

@@ -9,7 +9,7 @@ command_bar_module_server <- function(id) {
     function(input, output, session) {
       settings <- reactiveValues(
         sort_type = "from_newest",
-        view_type = "list"
+        view_type = "grid"
       )
       
       observeEvent(input$view_type, {

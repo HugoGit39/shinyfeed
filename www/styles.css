@@ -35,3 +35,7 @@
   margin-right: 8px;
   color: #0078d4;
 }
+
+.spinner-container {
+  height: calc(100vh - 54px);
+}

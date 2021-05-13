@@ -44,11 +44,6 @@ command_bar_module_server <- function(id) {
       icon = "Embed",
       iconOnly = TRUE,
       href = "https://github.com/rszymanski/shinyfeed"
-    ),
-    CommandBarItem(
-      text = "Info",
-      icon = "Info",
-      iconOnly = TRUE
     )
   )
 }

@@ -4,7 +4,7 @@ The app is available at https://rszymanski.shinyapps.io/shinyfeed/
 
 ## Short Description
 
-A personalized news feed in form of a Shiny app. Keep all of your news in a single place!
+`shinyfeed` is a personalized news feed in the form of a Shiny app. Keep all of your news in a single place!
 
 ## Full Description
 
@@ -14,7 +14,7 @@ A personalized news feed in form of a Shiny app. Keep all of your news in a sing
 
 ![grid-view](./screenshots/grid-view.png)
 
-For a more compact view of the posts users can also display items in form of list
+For a more compact view of the posts users can also display items in form of a list
 
 ![list-view](./screenshots/list-view.png)
 
@@ -24,7 +24,7 @@ Users can also sort items by titles and publication dates:
 
 ### Installation
 
-This project makes use of `renv` in order to export used dependencies and rsconnect for deployment. When opening the project R should automatically download the specified version of `renv`. Next in order to restore the used packages just run:
+This project makes use of `renv` in order to export used dependencies and `rsconnect` for deployment. When opening the project R should automatically download the specified version of `renv`. Next in order to restore the used packages just run:
 
 ```r
 renv::restore()
@@ -38,7 +38,7 @@ shiny::runApp()
 
 ### Configuration
 
-Uses can host their own aggregated news feeds by specifying rss feeds in the `config.yml` file:
+Users can host their own aggregated news feeds by specifying rss feeds in the `config.yml` file:
 
 ```yml
 default:
